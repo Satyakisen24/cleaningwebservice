@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://www.carrierhomecleaningservices.com.au/sitemap.xml
