@@ -58,15 +58,22 @@
   .price-strip strong{display:block;font-size:1.5rem;font-family:Georgia,serif;}
   footer{padding:40px 0;border-top:1px solid var(--line);font-size:0.85rem;color:#777;text-align:center;}
   img{width:100%;border-radius:14px;}
-  @media(max-width:700px){.grid2{grid-template-columns:1fr;}}
+  .phone-link{font-weight:800;color:var(--eucalyptus-dark);font-size:1.25rem;text-decoration:none;transition:color 0.2s ease;}
+  .phone-link:hover{color:var(--coral);}
+  @media(max-width:700px){
+    .grid2{grid-template-columns:1fr;}
+  }
+  @media(max-width:500px){
+    .phone-link{font-size:1.1rem;}
+  }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;padding:16px 24px;">
+  <div class="wrap" style="display:flex;align-items:center;justify-content:space-between;padding:16px 24px;flex-wrap:wrap;gap:12px;">
     <div class="brand"><a href="./index.html">✦ Carrier Home Cleaning</a></div>
-    <a href="tel:0423445224" style="font-weight:700;color:var(--eucalyptus-dark);font-size:0.95rem;text-decoration:none;">📞 0423 445 224</a>
+    <a href="tel:0423445224" class="phone-link">📞 0423 445 224</a>
   </div>
 </header>
 
@@ -105,9 +112,9 @@
 
 <section class="wrap">
   <div class="price-strip">
-    <div><strong>$90</strong>Domestic Clean (2 hrs)</div>
+    <div><strong>$90</strong>Domestic Clean (1-2 rooms)</div>
     <div><strong>$500+</strong>Bond Clean (2 bed)</div>
-    <div><strong>$38/hr</strong>Ironing / $50 Wash</div>
+    <div><strong>$38/hr</strong>Ironing / $38 Wash</div>
   </div>
 </section>
 

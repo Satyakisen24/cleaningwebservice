@@ -1,0 +1,1519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Pausali 🐼🐧</title>
+
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600&family=Outfit:wght@400;600;700&family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
+
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(-45deg, #ffd6e7, #ffebf0, #e0f2fe, #dbeafe);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    font-family: 'Outfit', 'Segoe UI', sans-serif;
+    position: relative;
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Particle Canvas */
+#particle-canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Card Styling */
+.card {
+    width: 92%;
+    max-width: 580px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    padding: 25px 30px;
+    border-radius: 30px;
+    text-align: center;
+    box-shadow: 0 20px 50px rgba(255, 79, 129, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    z-index: 10;
+    max-height: 90vh;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 79, 129, 0.2) transparent;
+}
+
+.card::-webkit-scrollbar {
+    width: 6px;
+}
+.card::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 79, 129, 0.2);
+    border-radius: 10px;
+}
+
+/* Particle Selector */
+.particle-selector {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.selector-btn {
+    background: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 79, 129, 0.15);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #4a5568;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.selector-btn:hover {
+    background: rgba(255, 79, 129, 0.1);
+}
+
+.selector-btn.active {
+    background: #ff4f81;
+    color: white;
+    box-shadow: 0 4px 10px rgba(255, 79, 129, 0.2);
+    border-color: #ff4f81;
+}
+
+/* Cozy Music Player */
+.audio-player {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 20px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.04);
+    max-width: 320px;
+    margin: 0 auto 25px auto;
+}
+
+.disc-container {
+    width: 50px;
+    height: 50px;
+}
+
+.disc {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: radial-gradient(circle, #444 30%, #111 31%, #222 40%, #111 41%, #444 60%, #111 61%, #222 100%);
+    border: 2px solid #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    position: relative;
+    transition: transform 0.5s ease;
+}
+
+.disc-center {
+    width: 14px;
+    height: 14px;
+    background: #ff4f81;
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border: 2px solid #fff;
+}
+
+.disc.spinning {
+    animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.player-controls {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.track-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #4a5568;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 180px;
+}
+
+.buttons-row {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.player-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    padding: 2px;
+    transition: transform 0.2s ease;
+}
+
+.player-btn:hover {
+    transform: scale(1.2);
+}
+
+.volume-container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    justify-content: center;
+}
+
+.volume-container input[type="range"] {
+    width: 70px;
+    height: 4px;
+    accent-color: #ff4f81;
+    cursor: pointer;
+}
+
+/* Chat Section */
+.chat-section {
+    transition: opacity 0.4s ease;
+}
+
+.animals {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.avatar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    user-select: none;
+}
+
+.avatar-label {
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    color: #718096;
+    background: rgba(237, 242, 247, 0.8);
+    padding: 3px 10px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.avatar-container:hover .avatar-label {
+    background: #ffd6e7;
+    color: #ff4f81;
+}
+
+/* SVG Animal Animations */
+.panda-svg {
+    transform-origin: bottom center;
+    animation: pandaIdle 4s ease-in-out infinite;
+}
+
+@keyframes pandaIdle {
+    0%, 100% { transform: translateY(0) scaleY(1); }
+    50% { transform: translateY(-3px) scaleY(1.02); }
+}
+
+.penguin-svg {
+    transform-origin: bottom center;
+    animation: penguinIdle 4s ease-in-out infinite 0.5s;
+}
+
+@keyframes penguinIdle {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(2deg) translateY(-2px); }
+}
+
+/* Blinking eyes for SVGs */
+.panda-eye-left {
+    transform-origin: 40px 40px;
+    animation: eyeBlink 4s infinite;
+}
+.panda-eye-right {
+    transform-origin: 60px 40px;
+    animation: eyeBlink 4s infinite;
+}
+.penguin-eye-left {
+    transform-origin: 42px 42px;
+    animation: eyeBlink 4.5s infinite;
+}
+.penguin-eye-right {
+    transform-origin: 58px 42px;
+    animation: eyeBlink 4.5s infinite;
+}
+
+@keyframes eyeBlink {
+    0%, 90%, 100% { transform: scaleY(1); }
+    95% { transform: scaleY(0.1); }
+}
+
+/* Hover/active triggers */
+.avatar-container.active .panda-svg {
+    animation: pandaBounce 1s ease-in-out infinite;
+}
+
+@keyframes pandaBounce {
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-10px) scaleY(0.96) scaleX(1.04); }
+}
+
+.avatar-container.active .penguin-svg {
+    animation: penguinWaddle 0.6s ease-in-out infinite;
+}
+
+@keyframes penguinWaddle {
+    0%, 100% { transform: rotate(-6deg) translateY(0); }
+    50% { transform: rotate(6deg) translateY(-5px); }
+}
+
+.avatar-container:hover .penguin-right-wing {
+    transform-origin: 78px 52px;
+    animation: flapRight 0.3s ease-in-out infinite alternate;
+}
+@keyframes flapRight {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(25deg); }
+}
+
+.avatar-container:hover .penguin-left-wing {
+    transform-origin: 22px 52px;
+    animation: flapLeft 0.3s ease-in-out infinite alternate;
+}
+@keyframes flapLeft {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(-25deg); }
+}
+
+.avatar-container:hover .panda-svg {
+    animation: pandaWave 0.8s ease-in-out infinite;
+}
+@keyframes pandaWave {
+    0%, 100% { transform: rotate(0deg); }
+    25% { transform: rotate(-4deg); }
+    75% { transform: rotate(4deg); }
+}
+
+.clicked-wave .panda-svg {
+    animation: pandaBounce 0.5s ease-in-out 2 !important;
+}
+.clicked-wave .penguin-svg {
+    animation: penguinWaddle 0.3s ease-in-out 3 !important;
+}
+
+/* Speech Bubble */
+.speech-bubble-container {
+    position: relative;
+    margin-bottom: 25px;
+    min-height: 95px;
+}
+
+.speech-bubble {
+    background: #fff9fa;
+    border: 2px solid #ffccd8;
+    border-radius: 20px;
+    padding: 15px 22px;
+    position: relative;
+    font-size: 16px;
+    color: #4a5568;
+    box-shadow: 0 8px 20px rgba(255, 79, 129, 0.04);
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    text-align: center;
+    line-height: 1.6;
+}
+
+/* Bubble pointers */
+.speech-bubble::after, .speech-bubble::before {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 10px 10px 0;
+    border-style: solid;
+    border-color: #fff9fa transparent;
+    display: block;
+    width: 0;
+    z-index: 1;
+    transition: left 0.3s ease;
+}
+
+.speech-bubble::before {
+    bottom: -13px;
+    border-width: 12px 12px 0;
+    border-color: #ffccd8 transparent;
+    z-index: 0;
+}
+
+.speech-bubble.tail-panda::after, .speech-bubble.tail-panda::before {
+    left: 28%;
+}
+
+.speech-bubble.tail-penguin::after, .speech-bubble.tail-penguin::before {
+    left: 72%;
+}
+
+.speech-bubble.tail-both::after, .speech-bubble.tail-both::before {
+    left: 50%;
+}
+
+/* Options & Input Styling */
+.options-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 15px;
+    min-height: 50px;
+    transition: opacity 0.3s ease;
+}
+
+.action-btn {
+    background: #ff4f81;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    box-shadow: 0 4px 15px rgba(255, 79, 129, 0.2);
+    transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 79, 129, 0.35);
+    opacity: 0.95;
+}
+
+.action-btn:active {
+    transform: translateY(0);
+}
+
+.mood-text-input {
+    width: 100%;
+    max-width: 300px;
+    padding: 12px 18px;
+    border-radius: 20px;
+    border: 2px solid #ffb6c1;
+    background: rgba(255, 255, 255, 0.9);
+    font-size: 15px;
+    color: #4a5568;
+    outline: none;
+    transition: all 0.3s ease;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+}
+
+.mood-text-input:focus {
+    border-color: #ff4f81;
+    box-shadow: 0 0 10px rgba(255, 79, 129, 0.15);
+}
+
+/* Floating Star Text Easter Egg */
+.floating-star-text {
+    position: absolute;
+    color: #ffb900;
+    font-size: 16px;
+    font-weight: 700;
+    pointer-events: none;
+    z-index: 100;
+    transition: all 2s cubic-bezier(0.25, 1, 0.5, 1);
+    transform: translate(-50%, 0) scale(1);
+    opacity: 1;
+    text-shadow: 0 0 8px rgba(255, 185, 0, 0.6);
+}
+
+.floating-star-text.launching {
+    transform: translate(-50%, -250px) scale(0.3) rotate(360deg);
+    opacity: 0;
+}
+
+/* Gift Box Section Styling */
+.gift-box-container {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 30px;
+    perspective: 800px;
+}
+
+.gift-box {
+    width: 120px;
+    height: 120px;
+    background: #ff4f81;
+    position: relative;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(255, 79, 129, 0.25);
+    transform-style: preserve-3d;
+    transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    animation: floatGift 3s ease-in-out infinite;
+}
+
+.gift-box:hover {
+    animation: shakeGift 0.5s linear infinite;
+}
+
+@keyframes floatGift {
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-8px) rotate(1deg); }
+}
+
+@keyframes shakeGift {
+    0% { transform: translate(1px, 1px) rotate(0deg); }
+    10% { transform: translate(-1px, -2px) rotate(-1deg); }
+    20% { transform: translate(-3px, 0px) rotate(1deg); }
+    30% { transform: translate(0px, 2px) rotate(0deg); }
+    40% { transform: translate(1px, -1px) rotate(1deg); }
+    50% { transform: translate(-1px, 2px) rotate(-1deg); }
+    60% { transform: translate(-3px, 1px) rotate(0deg); }
+    70% { transform: translate(2px, 1px) rotate(-1deg); }
+    80% { transform: translate(-1px, -1px) rotate(1deg); }
+    90% { transform: translate(2px, 2px) rotate(0deg); }
+    100% { transform: translate(1px, -2px) rotate(-1deg); }
+}
+
+.gift-lid {
+    width: 130px;
+    height: 28px;
+    background: #ff6b95;
+    position: absolute;
+    top: -14px;
+    left: -5px;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.08);
+    z-index: 2;
+    transition: transform 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.8s;
+}
+
+.gift-box-ribbon {
+    width: 22px;
+    height: 100%;
+    background: #ffd043;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1;
+}
+
+.gift-box::after {
+    content: '';
+    width: 100%;
+    height: 22px;
+    background: #ffd043;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1;
+}
+
+.gift-box-bow {
+    width: 38px;
+    height: 38px;
+    background: #ffd043;
+    position: absolute;
+    top: -32px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    border-radius: 50% 50% 0 50%;
+    z-index: 3;
+    box-shadow: -2px 2px 4px rgba(0,0,0,0.08);
+    transition: transform 0.8s ease, opacity 0.8s;
+}
+
+.gift-box-bow::after {
+    content: '';
+    width: 38px;
+    height: 38px;
+    background: #ffd043;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotate(90deg);
+    border-radius: 50% 50% 0 50%;
+}
+
+.gift-box.opened .gift-lid {
+    transform: translateY(-100px) rotate(45deg) scale(0.8);
+    opacity: 0;
+}
+
+.gift-box.opened .gift-box-bow {
+    transform: translateX(-50%) translateY(-120px) rotate(90deg) scale(0.6);
+    opacity: 0;
+}
+
+.gift-box.opened {
+    transform: scale(0.9);
+    animation: none;
+}
+
+.gift-instruction {
+    margin-top: 20px;
+    font-size: 15px;
+    color: #ff4f81;
+    font-weight: 600;
+    animation: breatheText 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes breatheText {
+    from { opacity: 0.6; transform: scale(0.98); }
+    to { opacity: 1; transform: scale(1.02); }
+}
+
+/* Surprise Letter */
+.surprise {
+    display: none;
+    background: #fffafb;
+    border: 2px solid rgba(255, 79, 129, 0.12);
+    padding: 30px;
+    border-radius: 25px;
+    color: #4a5568;
+    line-height: 1.8;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(255, 79, 129, 0.04);
+    position: relative;
+}
+
+.letter-seal {
+    font-size: 32px;
+    margin-bottom: 8px;
+    filter: drop-shadow(0 2px 5px rgba(255,79,129,0.25));
+    animation: pulseSeal 2s infinite alternate;
+    display: inline-block;
+}
+
+@keyframes pulseSeal {
+    from { transform: scale(1); }
+    to { transform: scale(1.15); }
+}
+
+.surprise h2 {
+    font-family: 'Outfit', sans-serif;
+    color: #ff4f81;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.letter-body {
+    font-family: 'Quicksand', sans-serif;
+    font-size: 16px;
+    color: #5a6578;
+}
+
+.letter-body p {
+    margin-bottom: 15px;
+}
+
+/* Polaroid Picture inside Letter */
+.polaroid {
+    background: white;
+    padding: 10px 10px 20px 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    border-radius: 4px;
+    transform: rotate(-3deg);
+    width: 220px;
+    margin: 25px auto;
+    transition: transform 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.05);
+}
+
+.polaroid:hover {
+    transform: rotate(0deg) scale(1.05);
+}
+
+.polaroid-image {
+    width: 200px;
+    height: 150px;
+    overflow: hidden;
+    border-radius: 2px;
+    background: #f0f4f8;
+}
+
+.polaroid-caption {
+    font-family: 'Caveat', cursive;
+    font-size: 18px;
+    text-align: center;
+    color: #4a5568;
+    margin-top: 10px;
+    font-weight: 600;
+}
+
+.letter-closing {
+    font-weight: 700;
+    color: #ff4f81;
+    margin-top: 20px;
+}
+
+.reset-btn {
+    background: #718096;
+    box-shadow: 0 4px 15px rgba(113, 128, 150, 0.2);
+    margin-top: 25px;
+}
+
+.reset-btn:hover {
+    box-shadow: 0 6px 20px rgba(113, 128, 150, 0.3);
+}
+</style>
+</head>
+
+<body>
+
+<!-- Falling Particles Background -->
+<canvas id="particle-canvas"></canvas>
+
+<div class="card">
+
+    <!-- Particle Customization Bar -->
+    <div class="particle-selector">
+        <button class="selector-btn active" onclick="setParticleType('petals')" id="btn-petals">🌸 Petals</button>
+        <button class="selector-btn" onclick="setParticleType('stars')" id="btn-stars">✨ Stars</button>
+    </div>
+
+    <!-- Cozy Music Player Widget -->
+    <div class="audio-player">
+        <div class="disc-container">
+            <div class="disc" id="playerDisc">
+                <div class="disc-center"></div>
+            </div>
+        </div>
+        <div class="player-controls">
+            <div class="track-title" id="trackTitle">Sleepy Cat 🐱 (Cozy Lofi)</div>
+            <div class="buttons-row">
+                <button class="player-btn" onclick="prevTrack()" title="Previous Track">⏮️</button>
+                <button class="player-btn play-btn" onclick="toggleMusic()" id="playBtn" title="Play/Pause">▶️</button>
+                <button class="player-btn" onclick="nextTrack()" title="Next Track">⏭️</button>
+            </div>
+            <div class="volume-container">
+                <span>🔈</span>
+                <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="0.5" oninput="changeVolume(this.value)">
+                <span>🔊</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Audio Element -->
+    <audio id="music" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-sleepy-cat-135.mp3" type="audio/mpeg">
+    </audio>
+
+    <!-- Chat / Dialogue Section -->
+    <div class="chat-section" id="chatSection">
+        
+        <div class="animals">
+            
+            <!-- Panda Avatar -->
+            <div class="avatar-container active" id="pandaAvatar" onclick="playWaveAnimation('panda')">
+                <svg class="panda-svg" viewBox="0 0 100 100" width="110" height="110">
+                    <!-- Body -->
+                    <rect x="25" y="60" width="50" height="35" rx="20" fill="#fff" stroke="#1a1a1a" stroke-width="2.5" />
+                    <circle cx="30" cy="70" r="8" fill="#1a1a1a" />
+                    <circle cx="70" cy="70" r="8" fill="#1a1a1a" />
+                    <!-- Head -->
+                    <circle cx="50" cy="45" r="28" fill="#fff" stroke="#1a1a1a" stroke-width="2.5" />
+                    <!-- Ears -->
+                    <circle cx="26" cy="22" r="10" fill="#1a1a1a" />
+                    <circle cx="74" cy="22" r="10" fill="#1a1a1a" />
+                    <!-- Eye patches -->
+                    <ellipse cx="40" cy="42" rx="7" ry="9" fill="#1a1a1a" transform="rotate(-15, 40, 42)" />
+                    <ellipse cx="60" cy="42" rx="7" ry="9" fill="#1a1a1a" transform="rotate(15, 60, 42)" />
+                    <!-- Eyes -->
+                    <circle class="panda-eye-left" cx="40" cy="40" r="3" fill="#fff" />
+                    <circle class="panda-eye-right" cx="60" cy="40" r="3" fill="#fff" />
+                    <circle cx="41" cy="39" r="1" fill="#fff" />
+                    <circle cx="61" cy="39" r="1" fill="#fff" />
+                    <!-- Nose -->
+                    <polygon points="48,48 52,48 50,51" fill="#1a1a1a" />
+                    <!-- Mouth -->
+                    <path d="M 47,53 Q 50,55 50,53 Q 50,55 53,53" fill="none" stroke="#1a1a1a" stroke-width="1.5" stroke-linecap="round" />
+                    <!-- Cheeks -->
+                    <circle cx="30" cy="48" r="4" fill="#ffb6c1" opacity="0.6" />
+                    <circle cx="70" cy="48" r="4" fill="#ffb6c1" opacity="0.6" />
+                </svg>
+                <span class="avatar-label">Panda 🐼</span>
+            </div>
+
+            <!-- Penguin Avatar -->
+            <div class="avatar-container active" id="penguinAvatar" onclick="playWaveAnimation('penguin')">
+                <svg class="penguin-svg" viewBox="0 0 100 100" width="110" height="110">
+                    <!-- Feet -->
+                    <ellipse cx="38" cy="85" rx="8" ry="4" fill="#ff9800" />
+                    <ellipse cx="62" cy="85" rx="8" ry="4" fill="#ff9800" />
+                    <!-- Body -->
+                    <ellipse cx="50" cy="55" rx="28" ry="32" fill="#2d3748" />
+                    <!-- White Tummy -->
+                    <ellipse cx="50" cy="60" rx="20" ry="24" fill="#fff" />
+                    <!-- Flippers (Wings) -->
+                    <path class="penguin-left-wing" d="M 22,50 C 15,55 12,65 18,70 C 22,65 24,58 24,52 Z" fill="#2d3748" />
+                    <path class="penguin-right-wing" d="M 78,50 C 85,55 88,65 82,70 C 78,65 76,58 76,52 Z" fill="#2d3748" />
+                    <!-- Eyes -->
+                    <circle class="penguin-eye-left" cx="42" cy="42" r="3" fill="#1a1a1a" />
+                    <circle class="penguin-eye-right" cx="58" cy="42" r="3" fill="#1a1a1a" />
+                    <circle cx="43" cy="41" r="1" fill="#fff" />
+                    <circle cx="59" cy="41" r="1" fill="#fff" />
+                    <!-- Beak -->
+                    <polygon points="46,47 54,47 50,54" fill="#ff9800" />
+                    <!-- Cheeks -->
+                    <circle cx="36" cy="47" r="3" fill="#ffb6c1" opacity="0.7" />
+                    <circle cx="64" cy="47" r="3" fill="#ffb6c1" opacity="0.7" />
+                </svg>
+                <span class="avatar-label">Penguin 🐧</span>
+            </div>
+            
+        </div>
+
+        <!-- Speech Bubble Dialog -->
+        <div class="speech-bubble-container">
+            <div class="speech-bubble tail-both" id="speechBubble">
+                Hi Pausali! 🌸 We were hoping you'd stop by today. We've been waiting for you!
+            </div>
+        </div>
+
+        <!-- Interactive Dialog Options -->
+        <div class="options-container" id="optionsContainer">
+            <button class="action-btn" onclick="dialogueStep('moodCheck')">Hello! 😊</button>
+        </div>
+        
+    </div>
+
+    <!-- Hidden Gift Box Section -->
+    <div class="gift-box-container" id="giftBoxContainer">
+        <div class="gift-box" id="giftBox" onclick="openGiftBox(event)">
+            <div class="gift-lid"></div>
+            <div class="gift-box-ribbon"></div>
+            <div class="gift-box-bow"></div>
+            <div class="gift-body"></div>
+        </div>
+        <p class="gift-instruction">Tap the box to open your surprise... ✨</p>
+    </div>
+
+    <!-- Hidden Letter Card -->
+    <div class="surprise" id="surpriseCard">
+        <div class="letter-seal">🌸</div>
+        <h2>✨ Dear Pausali ✨</h2>
+        <div class="letter-body">
+            <p>Just wanted to check on you today.</p>
+            <p>I hope your day had at least one reason to smile, one moment of peace, and one little thing that made you happy. 🌸</p>
+            
+            <!-- Styled Polaroid Drawing -->
+            <div class="polaroid">
+                <div class="polaroid-image">
+                    <svg viewBox="0 0 200 150" width="100%" height="100%">
+                        <rect width="200" height="150" rx="8" fill="#e0f2fe" />
+                        <circle cx="100" cy="120" r="80" fill="#fef08a" opacity="0.5" />
+                        
+                        <!-- Mini Panda inside photo -->
+                        <g transform="translate(30, 68) scale(0.9)">
+                            <ellipse cx="50" cy="60" rx="22" ry="20" fill="#fff" stroke="#1a1a1a" stroke-width="2" />
+                            <circle cx="32" cy="70" r="8" fill="#1a1a1a" />
+                            <circle cx="68" cy="70" r="8" fill="#1a1a1a" />
+                            <circle cx="50" cy="35" r="24" fill="#fff" stroke="#1a1a1a" stroke-width="2" />
+                            <circle cx="28" cy="18" r="8" fill="#1a1a1a" />
+                            <circle cx="72" cy="18" r="8" fill="#1a1a1a" />
+                            <ellipse cx="42" cy="34" rx="6" ry="7" fill="#1a1a1a" transform="rotate(-10, 42, 34)" />
+                            <ellipse cx="58" cy="34" rx="6" ry="7" fill="#1a1a1a" transform="rotate(10, 58, 34)" />
+                            <circle cx="43" cy="33" r="1.5" fill="#fff" />
+                            <circle cx="57" cy="33" r="1.5" fill="#fff" />
+                            <polygon points="48,42 52,42 50,44" fill="#1a1a1a" />
+                            <path d="M 48,46 Q 50,47 52,46" fill="none" stroke="#1a1a1a" stroke-width="1" />
+                        </g>
+
+                        <!-- Mini Penguin inside photo -->
+                        <g transform="translate(90, 68) scale(0.9)">
+                            <ellipse cx="50" cy="82" rx="6" ry="3" fill="#ff9800" />
+                            <ellipse cx="68" cy="82" rx="6" ry="3" fill="#ff9800" />
+                            <ellipse cx="59" cy="55" rx="20" ry="24" fill="#2d3748" />
+                            <ellipse cx="59" cy="59" rx="14" ry="18" fill="#fff" />
+                            <path d="M 39,55 C 33,58 29,66 34,70 C 37,66 39,60 39,55 Z" fill="#2d3748" />
+                            <path d="M 79,55 C 85,58 89,66 84,70 C 81,66 79,60 79,55 Z" fill="#2d3748" />
+                            <circle cx="52" cy="45" r="2" fill="#1a1a1a" />
+                            <circle cx="66" cy="45" r="2" fill="#1a1a1a" />
+                            <circle cx="53" cy="44" r="0.6" fill="#fff" />
+                            <circle cx="65" cy="44" r="0.6" fill="#fff" />
+                            <polygon points="56,49 62,49 59,54" fill="#ff9800" />
+                        </g>
+                        
+                        <!-- Pink Flower they share -->
+                        <g transform="translate(92, 102) scale(0.9)">
+                            <circle cx="6" cy="6" r="3.5" fill="#fca5a5" />
+                            <circle cx="12" cy="6" r="3.5" fill="#fca5a5" />
+                            <circle cx="6" cy="12" r="3.5" fill="#fca5a5" />
+                            <circle cx="12" cy="12" r="3.5" fill="#fca5a5" />
+                            <circle cx="9" cy="9" r="3.5" fill="#fca5a5" />
+                            <circle cx="9" cy="9" r="2" fill="#fef08a" />
+                        </g>
+                    </svg>
+                </div>
+                <div class="polaroid-caption">Warmest Hugs! 🐼🐧</div>
+            </div>
+
+            <p>No matter how your day went, please remember that you're appreciated.</p>
+            <p>Panda and Penguin wanted to remind you of that.</p>
+            <p class="letter-closing">✨ Have a lovely evening ✨</p>
+        </div>
+        <button class="action-btn reset-btn" onclick="resetConversation()">Talk to us again 🔄</button>
+    </div>
+
+</div>
+
+<script>
+// Dialogue Tree Configuration
+const dialogue = {
+    moodCheck: {
+        text: "Panda asks: How are you feeling right now, Pausali? 🐼",
+        speaker: "panda",
+        options: [
+            { text: "Cozy & Happy 🌻", next: "moodHappy" },
+            { text: "Just a bit tired ☕", next: "moodTired" },
+            { text: "A little down... 🌧️", next: "moodDown" },
+            { text: "Super busy / stressed 🌪️", next: "moodStressed" }
+        ]
+    },
+    moodHappy: {
+        text: "Penguin does a happy waddle! 🐧 Yay! We're so glad to hear that. Did something special happen today? ✨",
+        speaker: "penguin",
+        options: [
+            { text: "Yes, it did! 🎉", next: "happyShare" },
+            { text: "Just a peaceful day 🍵", next: "yummyFood" }
+        ]
+    },
+    happyShare: {
+        text: "We want to know! Write one good thing that happened today (or leave blank if it's a secret!):",
+        speaker: "both",
+        type: "input",
+        placeholder: "Type a happy moment...",
+        options: [
+            { text: "Save it in the stars ✨", next: "yummyFood" }
+        ]
+    },
+    moodTired: {
+        text: "Panda nods understandingly. 🐼 You've worked so hard. Put down whatever you are doing, and take a deep breath. You deserve to relax.",
+        speaker: "panda",
+        options: [
+            { text: "Take a deep breath... 🌬️", next: "breathingExercise" }
+        ]
+    },
+    breathingExercise: {
+        text: "Let's take a slow breath. Inhale comfort... Exhale tension... 🍃 Feel slightly better?",
+        speaker: "both",
+        options: [
+            { text: "Yes, a bit. ☕", next: "yummyFood" }
+        ]
+    },
+    moodDown: {
+        text: "Penguin hugs you virtually! 🐧 Panda is sending you the softest bamboo leaf. It's completely okay to have down days. You don't have to be strong all the time.",
+        speaker: "both",
+        options: [
+            { text: "Thank you, guys. 😊", next: "yummyFood" }
+        ]
+    },
+    moodStressed: {
+        text: "Panda and Penguin look at you with care. 🥺 One step at a time, Pausali. The world can wait. Right now, this is your safe cozy corner.",
+        speaker: "both",
+        options: [
+            { text: "I'm ready to relax. 🌸", next: "yummyFood" }
+        ]
+    },
+    yummyFood: {
+        text: "Penguin asks: By the way, did you eat something delicious today? 🍕🍰",
+        speaker: "penguin",
+        options: [
+            { text: "Yes! 🍰", next: "selfCareCheck" },
+            { text: "Not yet / busy 🍎", next: "remindEat" }
+        ]
+    },
+    remindEat: {
+        text: "Panda says: Oh no, please promise us you will grab a warm snack or meal soon. 🐼 Promise?",
+        speaker: "panda",
+        options: [
+            { text: "I promise! 🙋‍♀️", next: "selfCareCheck" }
+        ]
+    },
+    selfCareCheck: {
+        text: "Panda & Penguin: Are you happy today? 🌸 We hope you have a nice day with a sweet smile! ✨",
+        speaker: "both",
+        options: [
+            { text: "Ready for our surprise! 🎁", next: "showGift" }
+        ]
+    }
+};
+
+let currentState = 'moodCheck';
+let typingTimeout;
+
+// Dynamic Text Writer (Typewriter)
+function typeWriter(text, element, speed = 20, callback) {
+    element.innerHTML = '';
+    let i = 0;
+    
+    if (typingTimeout) clearTimeout(typingTimeout);
+    
+    // Type out the characters
+    function type() {
+        if (i < text.length) {
+            if (text.charAt(i) === '<') {
+                let closingIndex = text.indexOf('>', i);
+                if (closingIndex !== -1) {
+                    element.innerHTML += text.substring(i, closingIndex + 1);
+                    i = closingIndex + 1;
+                } else {
+                    element.innerHTML += text.charAt(i);
+                    i++;
+                }
+            } else {
+                element.innerHTML += text.charAt(i);
+                i++;
+            }
+            typingTimeout = setTimeout(type, speed);
+        } else if (callback) {
+            callback();
+        }
+    }
+    type();
+}
+
+// Proceed to dialogue step
+function dialogueStep(stateName) {
+    const state = dialogue[stateName];
+    if (!state) return;
+    
+    currentState = stateName;
+    
+    const panda = document.getElementById('pandaAvatar');
+    const penguin = document.getElementById('penguinAvatar');
+    const bubble = document.getElementById('speechBubble');
+    
+    panda.classList.remove('active');
+    penguin.classList.remove('active');
+    bubble.className = 'speech-bubble';
+    
+    if (state.speaker === 'panda') {
+        panda.classList.add('active');
+        bubble.classList.add('tail-panda');
+    } else if (state.speaker === 'penguin') {
+        penguin.classList.add('active');
+        bubble.classList.add('tail-penguin');
+    } else {
+        panda.classList.add('active');
+        penguin.classList.add('active');
+        bubble.classList.add('tail-both');
+    }
+    
+    const optionsContainer = document.getElementById('optionsContainer');
+    optionsContainer.style.opacity = 0;
+    optionsContainer.style.pointerEvents = 'none';
+    
+    typeWriter(state.text, bubble, 20, () => {
+        renderOptions(state);
+        optionsContainer.style.opacity = 1;
+        optionsContainer.style.pointerEvents = 'auto';
+    });
+}
+
+// Render option buttons dynamically
+function renderOptions(state) {
+    const container = document.getElementById('optionsContainer');
+    container.innerHTML = '';
+    
+    if (state.type === 'input') {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'input-wrapper';
+        wrapper.style.display = 'flex';
+        wrapper.style.flexDirection = 'column';
+        wrapper.style.alignItems = 'center';
+        wrapper.style.gap = '10px';
+        wrapper.style.width = '100%';
+        
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.className = 'mood-text-input';
+        input.placeholder = state.placeholder || 'Type here...';
+        input.id = 'customMoodInput';
+        
+        const btn = document.createElement('button');
+        btn.className = 'action-btn';
+        btn.innerHTML = state.options[0].text;
+        btn.onclick = () => {
+            const val = input.value.trim();
+            if (val) {
+                triggerStarLaunch(val);
+            }
+            dialogueStep(state.options[0].next);
+        };
+        
+        wrapper.appendChild(input);
+        wrapper.appendChild(btn);
+        container.appendChild(wrapper);
+        input.focus();
+    } else {
+        state.options.forEach(opt => {
+            const btn = document.createElement('button');
+            btn.className = 'action-btn';
+            btn.innerHTML = opt.text;
+            btn.onclick = () => {
+                if (opt.next === 'showGift') {
+                    showGiftBoxSection();
+                } else {
+                    dialogueStep(opt.next);
+                }
+            };
+            container.appendChild(btn);
+        });
+    }
+}
+
+// Star Launch Easter Egg Animation
+function triggerStarLaunch(text) {
+    const element = document.createElement('div');
+    element.className = 'floating-star-text';
+    element.textContent = text + ' ✨';
+    
+    const inputEl = document.getElementById('customMoodInput');
+    if (!inputEl) return;
+    const rect = inputEl.getBoundingClientRect();
+    element.style.left = `${rect.left + window.scrollX + rect.width / 2}px`;
+    element.style.top = `${rect.top + window.scrollY}px`;
+    
+    document.body.appendChild(element);
+    
+    setTimeout(() => {
+        element.classList.add('launching');
+    }, 10);
+    
+    setTimeout(() => {
+        element.remove();
+        // Spawn glowing stars at top of canvas
+        for (let i = 0; i < 8; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: -10,
+                speedY: Math.random() * 1 + 0.6,
+                speedX: Math.random() * 0.4 - 0.2,
+                size: Math.random() * 5 + 4,
+                angle: Math.random() * 360,
+                spin: Math.random() * 2 - 1,
+                opacity: 1,
+                color: 'hsla(45, 100%, 80%, 1)',
+                swaySpeed: 0.01,
+                swayOffset: Math.random() * 5,
+                update() {
+                    this.y += this.speedY;
+                    this.x += this.speedX;
+                    this.angle += this.spin;
+                },
+                draw() {
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    ctx.rotate((this.angle * Math.PI) / 180);
+                    ctx.fillStyle = this.color;
+                    ctx.beginPath();
+                    for (let i = 0; i < 4; i++) {
+                        ctx.rotate(Math.PI / 2);
+                        ctx.lineTo(0, -this.size);
+                        ctx.lineTo(this.size/3, 0);
+                    }
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.restore();
+                }
+            });
+        }
+    }, 2000);
+}
+
+// Swap to Gift Box UI
+function showGiftBoxSection() {
+    const chatSec = document.getElementById('chatSection');
+    chatSec.style.opacity = 0;
+    
+    setTimeout(() => {
+        chatSec.style.display = 'none';
+        
+        const giftSec = document.getElementById('giftBoxContainer');
+        giftSec.style.display = 'flex';
+        giftSec.style.opacity = 0;
+        
+        setTimeout(() => {
+            giftSec.style.transition = 'opacity 0.5s ease';
+            giftSec.style.opacity = 1;
+        }, 50);
+    }, 400);
+}
+
+// Open Gift Box Event
+function openGiftBox(event) {
+    const giftBox = document.getElementById('giftBox');
+    if (giftBox.classList.contains('opened')) return;
+    
+    giftBox.classList.add('opened');
+    
+    const rect = giftBox.getBoundingClientRect();
+    const x = rect.left + rect.width / 2;
+    const y = rect.top + rect.height / 2;
+    
+    // Confetti blast!
+    triggerConfetti(x, y);
+    
+    setTimeout(() => {
+        const giftSec = document.getElementById('giftBoxContainer');
+        giftSec.style.transition = 'opacity 0.6s ease';
+        giftSec.style.opacity = 0;
+        
+        setTimeout(() => {
+            giftSec.style.display = 'none';
+            
+            const card = document.getElementById('surpriseCard');
+            card.style.display = 'block';
+            card.style.opacity = 0;
+            card.style.transform = 'translateY(30px) scale(0.95)';
+            
+            setTimeout(() => {
+                card.style.transition = 'all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                card.style.opacity = 1;
+                card.style.transform = 'translateY(0) scale(1)';
+            }, 50);
+        }, 600);
+    }, 1200);
+}
+
+// Reset Conversation Loop
+function resetConversation() {
+    const card = document.getElementById('surpriseCard');
+    card.style.transition = 'all 0.5s ease';
+    card.style.opacity = 0;
+    card.style.transform = 'translateY(30px) scale(0.95)';
+    
+    setTimeout(() => {
+        card.style.display = 'none';
+        
+        const chatSec = document.getElementById('chatSection');
+        chatSec.style.display = 'block';
+        chatSec.style.opacity = 0;
+        
+        const giftBox = document.getElementById('giftBox');
+        giftBox.classList.remove('opened');
+        
+        dialogueStep('moodCheck');
+        
+        setTimeout(() => {
+            chatSec.style.transition = 'opacity 0.5s ease';
+            chatSec.style.opacity = 1;
+        }, 50);
+    }, 500);
+}
+
+// Character Interaction Wave effect
+function playWaveAnimation(avatar) {
+    const container = document.getElementById(avatar + 'Avatar');
+    if (container.classList.contains('clicked-wave')) return;
+    
+    container.classList.add('clicked-wave');
+    setTimeout(() => {
+        container.classList.remove('clicked-wave');
+    }, 1000);
+}
+
+/* --- Cozy Music Player Logic --- */
+const audioTracks = [
+    {
+        title: "Sleepy Cat 🐱 (Cozy Lofi)",
+        url: "https://assets.mixkit.co/music/preview/mixkit-sleepy-cat-135.mp3"
+    },
+    {
+        title: "Beautiful Dream 🌸 (Soft Piano)",
+        url: "https://assets.mixkit.co/music/preview/mixkit-beautiful-dream-2342.mp3"
+    },
+    {
+        title: "Pausali's Favorite 🎵 (Local)",
+        url: "music.mp3"
+    }
+];
+
+let currentTrackIndex = 0;
+let isPlaying = false;
+const audio = document.getElementById('music');
+
+function loadTrack(index) {
+    currentTrackIndex = index;
+    audio.src = audioTracks[index].url;
+    document.getElementById('trackTitle').textContent = audioTracks[index].title;
+    
+    if (isPlaying) {
+        audio.play().catch(e => {
+            console.log("Autoplay blocked/failed: ", e);
+            setPlayState(false);
+        });
+    }
+}
+
+function setPlayState(play) {
+    isPlaying = play;
+    const playBtn = document.getElementById('playBtn');
+    const disc = document.getElementById('playerDisc');
+    
+    if (play) {
+        playBtn.textContent = '⏸️';
+        disc.classList.add('spinning');
+    } else {
+        playBtn.textContent = '▶️';
+        disc.classList.remove('spinning');
+    }
+}
+
+function toggleMusic() {
+    if (audio.paused) {
+        audio.play()
+            .then(() => setPlayState(true))
+            .catch(e => {
+                console.error("Audio playback error: ", e);
+                if (audioTracks[currentTrackIndex].url === 'music.mp3') {
+                    console.log("Local audio failed. Defaulting to online track.");
+                    loadTrack(0);
+                    audio.play().then(() => setPlayState(true));
+                }
+            });
+    } else {
+        audio.pause();
+        setPlayState(false);
+    }
+}
+
+function nextTrack() {
+    let nextIndex = (currentTrackIndex + 1) % audioTracks.length;
+    loadTrack(nextIndex);
+}
+
+function prevTrack() {
+    let prevIndex = (currentTrackIndex - 1 + audioTracks.length) % audioTracks.length;
+    loadTrack(prevIndex);
+}
+
+function changeVolume(val) {
+    audio.volume = val;
+}
+
+audio.addEventListener('ended', nextTrack);
+
+/* --- Canvas Particles System --- */
+const canvas = document.getElementById('particle-canvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+let particleType = 'petals';
+
+function resizeCanvas() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+class Particle {
+    constructor() {
+        this.reset();
+        this.y = Math.random() * canvas.height;
+    }
+
+    reset() {
+        this.x = Math.random() * canvas.width;
+        this.y = -20;
+        this.size = Math.random() * 8 + 6;
+        this.speedY = Math.random() * 1.2 + 0.8;
+        this.speedX = Math.random() * 1 - 0.5;
+        this.angle = Math.random() * 360;
+        this.spin = Math.random() * 2 - 1;
+        this.opacity = Math.random() * 0.5 + 0.5;
+        this.color = this.getRandomColor();
+        this.swaySpeed = Math.random() * 0.02 + 0.01;
+        this.swayOffset = Math.random() * Math.PI * 2;
+    }
+
+    getRandomColor() {
+        if (particleType === 'petals') {
+            const hues = [340, 350, 0];
+            const hue = hues[Math.floor(Math.random() * hues.length)];
+            return `hsla(${hue}, 100%, 85%, ${this.opacity})`;
+        } else {
+            return `hsla(46, 100%, 80%, ${this.opacity})`;
+        }
+    }
+
+    update() {
+        this.y += this.speedY;
+        this.swayOffset += this.swaySpeed;
+        this.x += this.speedX + Math.sin(this.swayOffset) * 0.5;
+        this.angle += this.spin;
+
+        if (this.y > canvas.height + 20 || this.x < -20 || this.x > canvas.width + 20) {
+            this.reset();
+        }
+    }
+
+    draw() {
+        ctx.save();
+        ctx.translate(this.x, this.y);
+        ctx.rotate((this.angle * Math.PI) / 180);
+        ctx.globalAlpha = this.opacity;
+
+        if (particleType === 'petals') {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            ctx.moveTo(0, 0);
+            ctx.bezierCurveTo(-this.size, -this.size/2, -this.size, this.size, 0, this.size * 1.5);
+            ctx.bezierCurveTo(this.size, this.size, this.size, -this.size/2, 0, 0);
+            ctx.fill();
+        } else {
+            ctx.fillStyle = this.color;
+            ctx.beginPath();
+            for (let i = 0; i < 4; i++) {
+                ctx.rotate(Math.PI / 2);
+                ctx.lineTo(0, -this.size);
+                ctx.lineTo(this.size/3, 0);
+            }
+            ctx.closePath();
+            ctx.fill();
+        }
+        ctx.restore();
+    }
+}
+
+// Initial Standard Background Particles
+function initParticles() {
+    particles = [];
+    const count = Math.min(50, Math.floor(window.innerWidth / 22));
+    for (let i = 0; i < count; i++) {
+        particles.push(new Particle());
+    }
+}
+
+// Particle Selector Function
+function setParticleType(type) {
+    particleType = type;
+    document.querySelectorAll('.selector-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById(`btn-${type}`).classList.add('active');
+    
+    particles.forEach(p => {
+        if (!p.isConfetti) {
+            p.color = p.getRandomColor();
+        }
+    });
+}
+
+// Confetti Blast function
+function triggerConfetti(centerX, centerY) {
+    const colors = ['#ff4f81', '#ffc107', '#00bcd4', '#4caf50', '#e91e63', '#9c27b0', '#ffffff'];
+    for (let i = 0; i < 110; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const velocity = Math.random() * 8 + 4;
+        particles.push({
+            x: centerX,
+            y: centerY,
+            vx: Math.cos(angle) * velocity,
+            vy: Math.sin(angle) * velocity - Math.random() * 4,
+            size: Math.random() * 7 + 4,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            rotation: Math.random() * 360,
+            rotationSpeed: Math.random() * 12 - 6,
+            opacity: 1,
+            decay: Math.random() * 0.015 + 0.012,
+            isConfetti: true,
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.vy += 0.22; // gravity
+                this.vx *= 0.97; // drag
+                this.vy *= 0.97;
+                this.rotation += this.rotationSpeed;
+                this.opacity -= this.decay;
+            },
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate((this.rotation * Math.PI) / 180);
+                ctx.globalAlpha = Math.max(0, this.opacity);
+                ctx.fillStyle = this.color;
+                
+                ctx.fillRect(-this.size/2, -this.size/2, this.size, this.size * 1.5);
+                ctx.restore();
+            }
+        });
+    }
+}
+
+// Animation loop containing both standard particles & confetti
+function animateParticles() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    particles = particles.filter(p => {
+        p.update();
+        p.draw();
+        
+        if (p.isConfetti) {
+            return p.opacity > 0;
+        }
+        return true;
+    });
+    
+    const stdCount = particles.filter(p => !p.isConfetti).length;
+    const targetCount = Math.min(50, Math.floor(window.innerWidth / 22));
+    if (stdCount < targetCount) {
+        particles.push(new Particle());
+    }
+    
+    requestAnimationFrame(animateParticles);
+}
+
+// Initialize layout on load
+initParticles();
+animateParticles();
+
+// Trigger initial dialogue typewriter on launch
+dialogueStep('moodCheck');
+</script>
+
+</body>
+</html>
