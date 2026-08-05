@@ -362,7 +362,7 @@
         <div class="photo-main">
           <picture>
             <source media="(max-width: 600px)" srcset="./images/hero-mobile.webp">
-            <img src="./images/hero.webp" alt="Sparkling clean modern bathroom cleaned by Carrier Home Cleaning Services in Brisbane">
+            <img src="./images/hero.webp" alt="Sparkling clean modern bathroom cleaned by Carrier Home Cleaning Services in Brisbane" width="900" height="600" fetchpriority="high">
           </picture>
         </div>
         <div class="floating-card">
@@ -392,7 +392,7 @@
       </div>
       <div class="services-grid">
         <div class="service-card">
-          <div class="photo"><img src="./images/service-house.webp" alt="Clean bright living room after house cleaning service in Brisbane" loading="lazy"></div>
+          <div class="photo"><img src="./images/service-house.webp" alt="Clean bright living room after house cleaning service in Brisbane" loading="lazy" width="500" height="300"></div>
           <div class="body">
             <h3>Domestic Cleaning</h3>
             <p>Regular weekly/fortnightly cleaning or one-off visits to keep your home fresh.</p>
@@ -404,7 +404,7 @@
           </div>
         </div>
         <div class="service-card">
-          <div class="photo"><img src="./images/service-bathroom.webp" alt="Washing, drying and folding service Brisbane" loading="lazy"></div>
+          <div class="photo"><img src="./images/service-bathroom.webp" alt="Washing, drying and folding service Brisbane" loading="lazy" width="500" height="333"></div>
           <div class="body">
             <h3>Washing & Ironing</h3>
             <p>Complete laundry service including wash, dry, fold, and professional ironing.</p>
@@ -416,7 +416,7 @@
           </div>
         </div>
         <div class="service-card">
-          <div class="photo"><img src="./images/service-deep.webp" alt="Deep clean kitchen and end of lease cleaning Brisbane" loading="lazy"></div>
+          <div class="photo"><img src="./images/service-deep.webp" alt="Deep clean kitchen and end of lease cleaning Brisbane" loading="lazy" width="500" height="750"></div>
           <div class="body">
             <h3>Bond Cleaning</h3>
             <p>Full property, top-to-bottom move-out cleans.</p>
@@ -488,11 +488,11 @@
         <h2>See the Carrier clean difference</h2>
       </div>
       <div class="gallery-grid">
-        <div><img src="./images/gallery-bathroom.webp" alt="Sanitised bathroom Brisbane home" loading="lazy"></div>
-        <div><img src="./images/gallery-living.webp" alt="Clean living room Brisbane" loading="lazy"></div>
-        <div><img src="./images/gallery-kitchen.webp" alt="Spotless kitchen after deep clean Brisbane" loading="lazy"></div>
-        <div><img src="./images/gallery-supplies.webp" alt="Professional cleaning supplies and gloves" loading="lazy"></div>
-        <div><img src="./images/gallery-products.webp" alt="Eco friendly cleaning products Brisbane" loading="lazy"></div>
+        <div><img src="./images/gallery-bathroom.webp" alt="Sanitised bathroom Brisbane home" loading="lazy" width="500" height="333"></div>
+        <div><img src="./images/gallery-living.webp" alt="Clean living room Brisbane" loading="lazy" width="500" height="300"></div>
+        <div><img src="./images/gallery-kitchen.webp" alt="Spotless kitchen after deep clean Brisbane" loading="lazy" width="500" height="750"></div>
+        <div><img src="./images/gallery-supplies.webp" alt="Professional cleaning supplies and gloves" loading="lazy" width="500" height="333"></div>
+        <div><img src="./images/gallery-products.webp" alt="Eco friendly cleaning products Brisbane" loading="lazy" width="500" height="333"></div>
       </div>
     </div>
   </section>
@@ -649,12 +649,24 @@
 </footer>
 
 <!-- ============ GOOGLE TAG (GA4) — replace G-XXXXXXXXXX with your Measurement ID ============ -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX');
+  window.addEventListener('load', function() {
+    var trackingId = 'G-XXXXXXXXXX'; // Replace with your actual GA4 Measurement ID
+    if (trackingId && trackingId !== 'G-XXXXXXXXXX') {
+      setTimeout(function() {
+        var script = document.createElement('script');
+        script.async = true;
+        script.src = 'https://www.googletagmanager.com/gtag/js?id=' + trackingId;
+        document.head.appendChild(script);
+
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        window.gtag = gtag;
+        gtag('js', new Date());
+        gtag('config', trackingId);
+      }, 3000); // Loads 3 seconds after page is fully loaded to prevent performance penalty
+    }
+  });
 </script>
 
 </body>
