@@ -3,13 +3,13 @@ DirectoryIndex index.html
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  # Redirect non-www .com.au to www .com.au
-  RewriteCond %{HTTP_HOST} ^carrierhomecleaningservices\.com\.au$ [NC]
-  RewriteRule ^(.*)$ https://www.carrierhomecleaningservices.com.au/$1 [R=301,L]
+  # Redirect .com.au (both www and non-www) to non-www .com
+  RewriteCond %{HTTP_HOST} ^(www\.)?carrierhomecleaningservices\.com\.au$ [NC]
+  RewriteRule ^(.*)$ https://carrierhomecleaningservices.com/$1 [R=301,L]
 
-  # Redirect .com (both www and non-www) to www .com.au
-  RewriteCond %{HTTP_HOST} ^(www\.)?carrierhomecleaningservices\.com$ [NC]
-  RewriteRule ^(.*)$ https://www.carrierhomecleaningservices.com.au/$1 [R=301,L]
+  # Redirect www to non-www for .com
+  RewriteCond %{HTTP_HOST} ^www\.carrierhomecleaningservices\.com$ [NC]
+  RewriteRule ^(.*)$ https://carrierhomecleaningservices.com/$1 [R=301,L]
 
   # Redirect HTTP to HTTPS
   RewriteCond %{HTTPS} off
